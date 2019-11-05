@@ -1,0 +1,7 @@
+{
+    "name": "michaelyang/sync",
+    "type": "project",
+    "require": {
+        "google/apiclient": "^2.0"
+    }
+}
