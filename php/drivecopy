@@ -29,7 +29,7 @@ function getClient()
     // The file token.json stores the user's access and refresh tokens, and is
     // created automatically when the authorization flow completes for the first
     // time.
-    $tokenPath = 'token.json';
+    $tokenPath = __DIR__ . '/token.json';
     if (file_exists($tokenPath)) {
         $accessToken = json_decode(file_get_contents($tokenPath), true);
         $client->setAccessToken($accessToken);
@@ -86,6 +86,7 @@ function makeFileList(Google_Service_Drive $service, $parentId, $listName = 'fil
         makeFileList($service, $parentId, $listName, $results->getNextPageToken());
     }
 }
+
 function makeCopy(Google_Service_Drive $service, $parentId, $listName = 'filelist.txt')
 {
     $data = trim(file_get_contents($listName));
@@ -116,8 +117,14 @@ function makeCopy(Google_Service_Drive $service, $parentId, $listName = 'filelis
         }
     }
 }
+
+if (count($argv) < 3) {
+    return 1;
+}
+
 // Get the API client and construct the service object.
 $client = getClient();
 $service = new Google_Service_Drive($client);
-makeFileList($service, '');
-makeCopy($service, '');
+
+makeFileList($service, $argv[1]);
+makeCopy($service, $argv[2]);
